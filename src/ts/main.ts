@@ -107,4 +107,8 @@ document.querySelector("#go").addEventListener("click", () => {
     const output = colOutputs[i];
     output.value = `${sum}`;
   }
+  // Clear inputs
+  ([
+    ...document.querySelectorAll("input:not(.output)"),
+  ] as HTMLInputElement[]).forEach(input => (input.value = ""));
 });
