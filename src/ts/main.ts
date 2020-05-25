@@ -4,14 +4,28 @@ const inputEl = (id: string, leftBorder: boolean, topBorder: boolean) =>
     (leftBorder ? "left" : "") + (topBorder ? " top" : "")
   }" />`;
 
+const output = (extraClass: string) =>
+  `<input class="output ${extraClass}" value="0" readonly />`;
+
+let html = "<div>";
+html += output("blank-output");
 for (let i = 0; i < 9; i++) {
+  html += output("col-output");
+}
+html += "</div>";
+
+for (let i = 0; i < 9; i++) {
+  html += "<div>";
+  html += output("row-output");
   for (let j = 0; j < 9; j++) {
-    app.innerHTML += inputEl(`${i},${j}`, j % 3 === 0, i % 3 === 0);
+    html += inputEl(`${i},${j}`, j % 3 === 0, i % 3 === 0);
   }
-  app.innerHTML += "<br />";
+  html += "</div>";
 }
 
-app.innerHTML += '<button id="go">Go</button>';
+html += '<button id="go">Go</button>';
+
+app.innerHTML += html;
 
 interface Number_ {
   value: number;
@@ -75,5 +89,22 @@ document.querySelector("#go").addEventListener("click", () => {
   // Sum cols
   const cols = getCols(numbers);
   const colSums = cols.map(col => sandwichSum(col));
-  console.log({ rowSums, colSums });
+  // Display results
+  const rowOutputs = [
+    ...document.querySelectorAll(".output.row-output"),
+  ] as HTMLInputElement[];
+  const colOutputs = [
+    ...document.querySelectorAll(".output.col-output"),
+  ] as HTMLInputElement[];
+  console.log({ rowOutputs, colOutputs });
+  for (let i = 0; i < rowSums.length; i++) {
+    const sum = rowSums[i];
+    const output = rowOutputs[i];
+    output.value = `${sum}`;
+  }
+  for (let i = 0; i < colSums.length; i++) {
+    const sum = colSums[i];
+    const output = colOutputs[i];
+    output.value = `${sum}`;
+  }
 });

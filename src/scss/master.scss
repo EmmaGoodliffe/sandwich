@@ -1,13 +1,26 @@
-input {
+input,
+.output {
   width: 50px;
   height: 50px;
   border: 1px solid black;
   font-size: 2rem;
   text-align: center;
+}
+
+input:not(.output) {
   &.left {
     border-left: 2px solid black;
   }
   &.top {
     border-top: 2px solid black;
   }
+}
+
+.output.blank-output {
+  border-color: white;
+  color: white;
+}
+
+button {
+  font-size: 2rem;
 }
