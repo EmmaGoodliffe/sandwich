@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "rimraf dist && parcel build index.html",
+    "build": "rimraf dist && parcel build index.html --public-url /sandwich/dist",
     "dev": "parcel index.html",
     "eslint:fix": "npm run eslint -- --fix",
     "eslint": "eslint src/*.ts",
