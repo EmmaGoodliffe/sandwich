@@ -69,6 +69,10 @@ const sandwichSum = (arr: number[]) => {
   }
 };
 
+const getInputs = (selector: string) => {
+  return [...document.querySelectorAll(selector)] as HTMLInputElement[];
+};
+
 document.querySelector("#go").addEventListener("click", () => {
   // Collect data
   const numbers: Number_[] = [...document.querySelectorAll("input")].map(
@@ -90,13 +94,8 @@ document.querySelector("#go").addEventListener("click", () => {
   const cols = getCols(numbers);
   const colSums = cols.map(col => sandwichSum(col));
   // Display results
-  const rowOutputs = [
-    ...document.querySelectorAll(".output.row-output"),
-  ] as HTMLInputElement[];
-  const colOutputs = [
-    ...document.querySelectorAll(".output.col-output"),
-  ] as HTMLInputElement[];
-  console.log({ rowOutputs, colOutputs });
+  const rowOutputs = getInputs(".output.row-output");
+  const colOutputs = getInputs(".output.col-output");
   for (let i = 0; i < rowSums.length; i++) {
     const sum = rowSums[i];
     const output = rowOutputs[i];
@@ -108,7 +107,21 @@ document.querySelector("#go").addEventListener("click", () => {
     output.value = `${sum}`;
   }
   // Clear inputs
-  ([
-    ...document.querySelectorAll("input:not(.output)"),
-  ] as HTMLInputElement[]).forEach(input => (input.value = ""));
+  getInputs("input:not(.output)").forEach(input => (input.value = ""));
+});
+
+document.addEventListener("keypress", e => {
+  const { key } = e;
+  const isNumber = !isNaN(parseInt(key));
+  if (isNumber) {
+    const inputs = getInputs("input:not(.output)") as HTMLElement[];
+    const focused = document.activeElement as HTMLElement;
+    const index = inputs.indexOf(focused);
+    if (index != -1) {
+      const toFocus = inputs[index + 1];
+      if (toFocus) {
+        toFocus.focus();
+      }
+    }
+  }
 });
